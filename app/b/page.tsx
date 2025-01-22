@@ -1,9 +1,10 @@
 "use client"
 import Leaderboard from '@/components/Leaderboard'
+import { Spinner } from '@/components/Spinner'
 import { useSearchParams } from 'next/navigation'
 import { Suspense } from 'react'
 
-export default function BrowserSourcePage() {
+function BrowserSource() {
   const sp = useSearchParams()
   
   const eventId = sp.get("e")
@@ -15,12 +16,19 @@ export default function BrowserSourcePage() {
   }
 
   return (
-    <Suspense>
-      <Leaderboard
-        eventId={eventId}
-        rows={+rows}
-        cols={+cols}
-      />
+    <Leaderboard
+      eventId={eventId}
+      rows={+rows}
+      cols={+cols}
+    />
+  )
+}
+
+export default function BrowserSourcePage() {
+
+  return (
+    <Suspense fallback={<Spinner />}>
+      <BrowserSource />
     </Suspense>
   );
 }
