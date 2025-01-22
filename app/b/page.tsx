@@ -1,6 +1,7 @@
 "use client"
 import Leaderboard from '@/components/Leaderboard'
 import { useSearchParams } from 'next/navigation'
+import { Suspense } from 'react'
 
 export default function BrowserSourcePage() {
   const sp = useSearchParams()
@@ -14,10 +15,12 @@ export default function BrowserSourcePage() {
   }
 
   return (
-    <Leaderboard
-      eventId={eventId}
-      rows={+rows}
-      cols={+cols}
-    />
+    <Suspense>
+      <Leaderboard
+        eventId={eventId}
+        rows={+rows}
+        cols={+cols}
+      />
+    </Suspense>
   );
 }
