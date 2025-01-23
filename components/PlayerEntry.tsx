@@ -1,14 +1,11 @@
-import { msToTime } from "@/public/functions/logic";
-import { PlayerRanking } from "@/public/interfaces/Rankings"
-
 interface Props {
   place: number;
-  player?: PlayerRanking;
-  unrankedPlayer?: { uuid: string; nickname: string };
+  name: string;
+  scoreText: string;
   applyPlaceStyle: boolean
 }
 
-export const PlayerEntry = ({ place, player, unrankedPlayer, applyPlaceStyle }: Props) => {
+export const PlayerEntry = ({ place, name, scoreText, applyPlaceStyle }: Props) => {
   let placeStyle = {}
   if (!applyPlaceStyle) {
     placeStyle = {}
@@ -23,12 +20,8 @@ export const PlayerEntry = ({ place, player, unrankedPlayer, applyPlaceStyle }: 
   return (
     <div className="grid grid-cols-4 grid-rows-[auto_min-content] text-center">
       <span className="row-span-2 player-place">{place}.</span>
-      <span style={placeStyle} className="col-span-3 player-name">{player ? player.nickname : unrankedPlayer!.nickname}</span>
-      <span className="col-span-3 player-score">
-        {
-          `${player ? player.totalPoints : 0} - ${player ? msToTime(player.completions[0].time) : "N/A"}`
-        }
-      </span>
+      <span style={placeStyle} className="col-span-3 player-name">{name}</span>
+      <span className="col-span-3 player-score">{scoreText}</span>
     </div>
   )
 }

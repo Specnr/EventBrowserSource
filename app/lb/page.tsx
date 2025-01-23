@@ -1,5 +1,5 @@
 "use client"
-import Leaderboard from '@/components/Leaderboard'
+import RankingLeaderboard from '@/components/RankingLeaderboard'
 import { Spinner } from '@/components/Spinner'
 import { useSearchParams } from 'next/navigation'
 import { Suspense } from 'react'
@@ -16,7 +16,7 @@ function BrowserSource() {
   }
 
   return (
-    <Leaderboard
+    <RankingLeaderboard
       eventId={eventId}
       rows={+rows}
       cols={+cols}

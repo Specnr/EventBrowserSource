@@ -2,7 +2,7 @@ import { Result } from "@/public/interfaces/Rankings";
 import useSWR from "swr";
 import { Spinner } from "./Spinner";
 import { PlayerEntry } from "./PlayerEntry";
-import { NICKNAME_CACHE, uuidToIGN } from "@/public/functions/player";
+import { getScoreTextFromPR, NICKNAME_CACHE, uuidToIGN } from "@/public/functions/player";
 import { createArrayOfSize } from "@/public/functions/logic";
 
 const fetcher = async (url: string) => {
@@ -25,7 +25,7 @@ interface Props {
   cols: number;
 }
 
-export default function Leaderboard({ eventId, rows, cols }: Props) {
+export default function RankingLeaderboard({ eventId, rows, cols }: Props) {
   const { data, error, isLoading } = useSWR(
     `https://paceman.gg/api/cs/event?id=${eventId}`, fetcher, { refreshInterval: 30 * 1000, }
   )
@@ -59,7 +59,8 @@ export default function Leaderboard({ eventId, rows, cols }: Props) {
                       <td className="p-0">
                         <PlayerEntry
                           place={data.rankings.length + 1}
-                          unrankedPlayer={data.unrankedPlayers[playerIndex - data.rankings.length]}
+                          name={data.unrankedPlayers[playerIndex - data.rankings.length].nickname}
+                          scoreText="0 - N/A"
                           applyPlaceStyle={false}
                         />
                       </td>
@@ -72,7 +73,8 @@ export default function Leaderboard({ eventId, rows, cols }: Props) {
                     <td className="p-0">
                       <PlayerEntry
                         place={playerIndex + 1}
-                        player={data.rankings[playerIndex]}
+                        name={data.rankings[playerIndex].nickname}
+                        scoreText={getScoreTextFromPR(data.rankings[playerIndex])}
                         applyPlaceStyle={data.rankings.length >= 3}
                       />
                     </td>

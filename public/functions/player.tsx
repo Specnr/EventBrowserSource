@@ -1,3 +1,6 @@
+import { PlayerRanking } from "../interfaces/Rankings"
+import { msToTime } from "./logic"
+
 const DEFAULT_IGN = "N/A"
 
 export const NICKNAME_CACHE = new Map<string, string>([
@@ -42,3 +45,7 @@ export const uuidToHead = (uuid: string) => {
   const endpoint = "https://api.mineatar.io/face/";
   return `${endpoint}${uuid}`;
 };
+
+export const getScoreTextFromPR = (p: PlayerRanking) => (
+  `${p.totalPoints} - ${msToTime(p.completions[0].time)}`
+)
