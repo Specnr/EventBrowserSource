@@ -4,6 +4,7 @@ import { Spinner } from "./Spinner";
 import { PlayerEntry } from "./PlayerEntry";
 import { getScoreTextFromPR, NICKNAME_CACHE, uuidToIGN } from "@/public/functions/player";
 import Leaderboard from "./Leaderboard";
+import { GET_EVENT_DATA_URL } from "@/public/functions/constants";
 
 const fetcher = async (url: string) => {
   const data = (await fetch(url).then((res) => res.json())) as Result;
@@ -27,7 +28,7 @@ interface Props {
 
 export default function RankingLeaderboard({ eventId, rows, cols }: Props) {
   const { data, error, isLoading } = useSWR(
-    `https://paceman.gg/api/cs/event?id=${eventId}`, fetcher, { refreshInterval: 30 * 1000, }
+    GET_EVENT_DATA_URL(eventId), fetcher, { refreshInterval: 30 * 1000, }
   )
 
   if (isLoading) {
