@@ -18,10 +18,10 @@ const fetcher = async (url: string) => {
     .then((res) => res.json())) as { stats: StatsResult, nickname: string }[];
 
   return {
-    nether: stats.toSorted((a, b) => b.stats.nether.count - a.stats.nether.count).map(s => ({ nickname: s.nickname, stats: s.stats.nether })),
-    secondStructure: stats.toSorted((a, b) => b.stats.second_structure.count - a.stats.second_structure.count).map(s => ({ nickname: s.nickname, stats: s.stats.second_structure })),
-    firstPortal: stats.toSorted((a, b) => b.stats.first_portal.count - a.stats.first_portal.count).map(s => ({ nickname: s.nickname, stats: s.stats.first_portal })),
-    stronghold: stats.toSorted((a, b) => b.stats.stronghold.count - a.stats.stronghold.count).map(s => ({ nickname: s.nickname, stats: s.stats.stronghold }))
+    nether: [...stats].sort((a, b) => b.stats.nether.count - a.stats.nether.count).map(s => ({ nickname: s.nickname, stats: s.stats.nether })),
+    secondStructure: [...stats].sort((a, b) => b.stats.second_structure.count - a.stats.second_structure.count).map(s => ({ nickname: s.nickname, stats: s.stats.second_structure })),
+    firstPortal: [...stats].sort((a, b) => b.stats.first_portal.count - a.stats.first_portal.count).map(s => ({ nickname: s.nickname, stats: s.stats.first_portal })),
+    stronghold: [...stats].sort((a, b) => b.stats.stronghold.count - a.stats.stronghold.count).map(s => ({ nickname: s.nickname, stats: s.stats.stronghold }))
   }
 }
 
@@ -41,6 +41,7 @@ export default function NetherLeaderboard({ event, rows, cols }: Props) {
   }
 
   if (!data || error || !data.nether) {
+    console.error(error, data)
     return <h1>Invalid event!</h1>
   }
 
