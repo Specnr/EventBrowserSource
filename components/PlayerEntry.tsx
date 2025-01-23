@@ -2,7 +2,7 @@ interface Props {
   place: number;
   name: string;
   scoreText: string;
-  applyPlaceStyle: boolean
+  applyPlaceStyle?: boolean
 }
 
 export const PlayerEntry = ({ place, name, scoreText, applyPlaceStyle }: Props) => {

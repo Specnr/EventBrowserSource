@@ -3,7 +3,7 @@ import useSWR from "swr";
 import { Spinner } from "./Spinner";
 import { PlayerEntry } from "./PlayerEntry";
 import { getScoreTextFromPR, NICKNAME_CACHE, uuidToIGN } from "@/public/functions/player";
-import { createArrayOfSize } from "@/public/functions/logic";
+import Leaderboard from "./Leaderboard";
 
 const fetcher = async (url: string) => {
   const data = (await fetch(url).then((res) => res.json())) as Result;
@@ -38,54 +38,43 @@ export default function RankingLeaderboard({ eventId, rows, cols }: Props) {
     return <h1>Invalid event!</h1>
   }
 
-  // TODO: make these guys have fixed width somehow
-  // Idea: Prefetch the longest name, and put that as an invisible text element? Probably some better way
   return (
-    <div className={`grid grid-cols-${cols} grid-flow-col`}>
-    {
-      createArrayOfSize(cols).map((_,i) => (
-        <table key={i}>
-          <tbody>
-            {
-              createArrayOfSize(rows).map((_,j) => {
-                const playerIndex = (rows * i) + j
-                if (playerIndex >= (data.rankings.length + data.unrankedPlayers.length)) {
-                  return
-                }
+    <Leaderboard
+      rows={rows}
+      cols={cols}
+      generateCell={(i, j) => {
+        const playerIndex = (rows * i) + j
+        if (playerIndex >= (data.rankings.length + data.unrankedPlayers.length)) {
+          return
+        }
 
-                if (playerIndex >= data.rankings.length) {
-                  return (
-                    <tr key={j}>
-                      <td className="p-0">
-                        <PlayerEntry
-                          place={data.rankings.length + 1}
-                          name={data.unrankedPlayers[playerIndex - data.rankings.length].nickname}
-                          scoreText="0 - N/A"
-                          applyPlaceStyle={false}
-                        />
-                      </td>
-                    </tr>
-                  )
-                }
+        if (playerIndex >= data.rankings.length) {
+          return (
+            <tr key={j}>
+              <td className="p-0">
+                <PlayerEntry
+                  place={data.rankings.length + 1}
+                  name={data.unrankedPlayers[playerIndex - data.rankings.length].nickname}
+                  scoreText="0 - N/A"
+                />
+              </td>
+            </tr>
+          )
+        }
 
-                return (
-                  <tr key={j}>
-                    <td className="p-0">
-                      <PlayerEntry
-                        place={playerIndex + 1}
-                        name={data.rankings[playerIndex].nickname}
-                        scoreText={getScoreTextFromPR(data.rankings[playerIndex])}
-                        applyPlaceStyle={data.rankings.length >= 3}
-                      />
-                    </td>
-                  </tr>
-                )
-              })
-            }
-          </tbody>
-        </table>
-      ))
-    }
-    </div>
+        return (
+          <tr key={j}>
+            <td className="p-0">
+              <PlayerEntry
+                place={playerIndex + 1}
+                name={data.rankings[playerIndex].nickname}
+                scoreText={getScoreTextFromPR(data.rankings[playerIndex])}
+                applyPlaceStyle={data.rankings.length >= 3}
+              />
+            </td>
+          </tr>
+        )
+      }}
+    />
   )
 }
