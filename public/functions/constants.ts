@@ -1,4 +1,4 @@
-export const GET_EVENT_DATA_URL = (eventId: string) => `https://paceman.gg/api/cs/event?id=${eventId}`
+export const GET_EVENT_DATA_URL = (event: string) => `https://paceman.gg/api/cs/event?vanity=${event}`
 
 export const GET_INTERNAL_STATS_URL = (players: string[], start: number) => `/api/stats?names=${players.join(",")}&start=${start}`
 

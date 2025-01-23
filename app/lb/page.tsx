@@ -7,17 +7,17 @@ import { Suspense } from 'react'
 function BrowserSource() {
   const sp = useSearchParams()
   
-  const eventId = sp.get("e")
+  const event = sp.get("e")
   const rows = sp.get("r")
   const cols = sp.get("c")
 
-  if (!eventId || !rows || !cols || isNaN(+rows) || isNaN(+cols) || !Number.isInteger(+rows) || !Number.isInteger(+cols)) {
+  if (!event || !rows || !cols || isNaN(+rows) || isNaN(+cols) || !Number.isInteger(+rows) || !Number.isInteger(+cols)) {
     return <h1>Invalid Params!</h1>
   }
 
   return (
     <RankingLeaderboard
-      eventId={eventId}
+      event={event}
       rows={+rows}
       cols={+cols}
     />

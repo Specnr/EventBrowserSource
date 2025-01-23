@@ -21,14 +21,14 @@ const fetcher = async (url: string) => {
 }
 
 interface Props {
-  eventId: string;
+  event: string;
   rows: number;
   cols: number;
 }
 
-export default function RankingLeaderboard({ eventId, rows, cols }: Props) {
+export default function RankingLeaderboard({ event, rows, cols }: Props) {
   const { data, error, isLoading } = useSWR(
-    GET_EVENT_DATA_URL(eventId), fetcher, { refreshInterval: 30 * 1000, }
+    GET_EVENT_DATA_URL(event), fetcher, { refreshInterval: 30 * 1000, }
   )
 
   if (isLoading) {

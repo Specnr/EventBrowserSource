@@ -1,9 +1,23 @@
 # PaceMan Event Browser Source
 Creates a dynamic leaderboard for PaceMan events, built for customizeability in OBS
 
-## Customization:
-Enter your event id, and desired rows and cols in the query params, for example PaceMan Playoffs S2 with 8 rows and 2 columns would look like this: `/lb?e=66d60519e80565e493300254&r=8&c=2`
+## Leaderboard
+The leaderboard browser source can be found here: `/lb?e=66d60519e80565e493300254&r=8&c=2`
 
+### Params:
+- e: event vanity
+- r: row count
+- c: column count
+
+## Event Stats
+The stats leaderboard browser source can be found here: `/stats?e=66d60519e80565e493300254&r=8&c=2`
+
+### Params:
+- e: event vanity
+- r: row count
+- c: column count
+
+## Customization:
 Add custom CSS to the browser source in order to change how things look
 
 For example:
