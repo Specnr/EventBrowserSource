@@ -15,8 +15,6 @@ export const getStatsInputFromResult = async (result: Result) => {
     return null
   }
 
-  console.log(start)
-
   const whitelist = await Promise.all(
     result.event.whitelist.map(async p => await uuidToIGN(p))
   )
