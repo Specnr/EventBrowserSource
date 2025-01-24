@@ -10,7 +10,8 @@ export const NICKNAME_CACHE = new Map<string, string>([
   ["alladvancements", "Redpill"],
   ["bing_pigs", "Mongey"],
   ["schwarzer_rabe97", "Jason"],
-  ["priffie", "Priffin"]
+  ["priffie", "Priffin"],
+  ["nohacsjustroblox", "Roblox"]
 ])
 
 export const uuidToIGN = async (uuid: string) => {
