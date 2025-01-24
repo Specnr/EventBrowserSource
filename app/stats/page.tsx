@@ -1,5 +1,5 @@
 "use client"
-import NetherLeaderboard from '@/components/NetherLeaderboard'
+import StatsLeaderboard from '@/components/StatsLeaderboard'
 import { Spinner } from '@/components/Spinner'
 import { useSearchParams } from 'next/navigation'
 import { Suspense } from 'react'
@@ -16,7 +16,7 @@ function BrowserSource() {
   }
 
   return (
-    <NetherLeaderboard
+    <StatsLeaderboard
       event={event}
       rows={+rows}
       cols={+cols}

@@ -19,9 +19,11 @@ const fetcher = async (url: string) => {
 
   return {
     nether: [...stats].sort((a, b) => b.stats.nether.count - a.stats.nether.count).map(s => ({ nickname: s.nickname, stats: s.stats.nether })),
+    firstStructure: [...stats].sort((a, b) => b.stats.first_structure.count - a.stats.first_structure.count).map(s => ({ nickname: s.nickname, stats: s.stats.first_structure })),
     secondStructure: [...stats].sort((a, b) => b.stats.second_structure.count - a.stats.second_structure.count).map(s => ({ nickname: s.nickname, stats: s.stats.second_structure })),
     firstPortal: [...stats].sort((a, b) => b.stats.first_portal.count - a.stats.first_portal.count).map(s => ({ nickname: s.nickname, stats: s.stats.first_portal })),
-    stronghold: [...stats].sort((a, b) => b.stats.stronghold.count - a.stats.stronghold.count).map(s => ({ nickname: s.nickname, stats: s.stats.stronghold }))
+    stronghold: [...stats].sort((a, b) => b.stats.stronghold.count - a.stats.stronghold.count).map(s => ({ nickname: s.nickname, stats: s.stats.stronghold })),
+    end: [...stats].sort((a, b) => b.stats.end.count - a.stats.end.count).map(s => ({ nickname: s.nickname, stats: s.stats.end })),
   }
 }
 
@@ -31,7 +33,7 @@ interface Props {
   cols: number;
 }
 
-export default function NetherLeaderboard({ event, rows, cols }: Props) {
+export default function StatsLeaderboard({ event, rows, cols }: Props) {
   const { data, error, isLoading } = useSWR(
     GET_EVENT_DATA_URL(event), fetcher, { refreshInterval: 60 * 1000, }
   )
@@ -63,6 +65,28 @@ export default function NetherLeaderboard({ event, rows, cols }: Props) {
                   place={playerIndex + 1}
                   name={data.nether[playerIndex].nickname}
                   scoreText={getScoreTextFromStat(data.nether[playerIndex].stats)}
+                />
+              </td>
+            </tr>
+          )
+        }}
+      />
+      <Leaderboard
+        rows={rows}
+        cols={cols}
+        generateCell={(i, j) => {
+          const playerIndex = (rows * i) + j
+          if (playerIndex >= data.firstStructure.length) {
+            return
+          }
+
+          return (
+            <tr key={j}>
+              <td className="p-0">
+                <PlayerEntry
+                  place={playerIndex + 1}
+                  name={data.firstStructure[playerIndex].nickname}
+                  scoreText={getScoreTextFromStat(data.firstStructure[playerIndex].stats)}
                 />
               </td>
             </tr>
@@ -129,6 +153,28 @@ export default function NetherLeaderboard({ event, rows, cols }: Props) {
                   place={playerIndex + 1}
                   name={data.stronghold[playerIndex].nickname}
                   scoreText={getScoreTextFromStat(data.stronghold[playerIndex].stats)}
+                />
+              </td>
+            </tr>
+          )
+        }}
+      />
+      <Leaderboard
+        rows={rows}
+        cols={cols}
+        generateCell={(i, j) => {
+          const playerIndex = (rows * i) + j
+          if (playerIndex >= data.end.length) {
+            return
+          }
+
+          return (
+            <tr key={j}>
+              <td className="p-0">
+                <PlayerEntry
+                  place={playerIndex + 1}
+                  name={data.end[playerIndex].nickname}
+                  scoreText={getScoreTextFromStat(data.end[playerIndex].stats)}
                 />
               </td>
             </tr>
