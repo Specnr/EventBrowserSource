@@ -1,13 +1,15 @@
-import { NICKNAME_CACHE } from "@/public/functions/player";
+import { ignToHead, NICKNAME_CACHE } from "@/public/functions/player";
+import Image from "next/image";
 
 interface Props {
   place: number;
   name: string;
   scoreText: string;
-  applyPlaceStyle?: boolean
+  applyPlaceStyle?: boolean;
+  hideImage?: boolean;
 }
 
-export const PlayerEntry = ({ place, name, scoreText, applyPlaceStyle }: Props) => {
+export const PlayerEntry = ({ place, name, scoreText, applyPlaceStyle, hideImage }: Props) => {
   let placeStyle = {}
   if (!applyPlaceStyle) {
     placeStyle = {}
@@ -22,7 +24,20 @@ export const PlayerEntry = ({ place, name, scoreText, applyPlaceStyle }: Props) 
   return (
     <div className="grid grid-cols-4 grid-rows-[auto_min-content] text-center">
       <span className="row-span-2 player-place">{place}.</span>
-      <span style={placeStyle} className="col-span-3 player-name">{NICKNAME_CACHE.get(name.toLowerCase()) || name}</span>
+      <span style={placeStyle} className="col-span-3 player-name inline-flex items-center mx-auto space-x-2">
+        {
+          !hideImage && (
+            <Image
+              alt="avatar"
+              src={ignToHead(name)}
+              width={20}
+              height={20}
+              unoptimized
+            />
+          )
+        }
+        <span>{NICKNAME_CACHE.get(name.toLowerCase()) || name}</span>
+      </span>
       <span className="col-span-3 player-score">{scoreText}</span>
     </div>
   )

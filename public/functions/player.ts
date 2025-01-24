@@ -38,10 +38,9 @@ export const uuidToIGN = async (uuid: string) => {
   }
 }
 
-export const uuidToHead = (uuid: string) => {
-  const endpoint = "https://api.mineatar.io/face/";
-  return `${endpoint}${uuid}`;
-};
+export const uuidToHead = (uuid: string) => `https://api.mineatar.io/face/${uuid}`;
+
+export const ignToHead = (ign: string) => `https://mc-heads.net/avatar/${ign}`
 
 export const getScoreTextFromPR = (p: PlayerRanking) => (
   `${p.totalPoints} - ${msToTime(p.completions[0].time)}`
