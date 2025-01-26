@@ -7,9 +7,9 @@ import { getScoreTextFromStat, getStatsInputFromResult } from "@/public/function
 import { PlayerEntry } from "./PlayerEntry";
 import { StatsResult } from "@/public/interfaces/Stats";
 
-const fetcher = async (url: string) => {
+const fetcher = async (url: string, statsEventDay: number) => {
   const data = (await fetch(url).then((res) => res.json())) as Result;
-  const input = await getStatsInputFromResult(data)
+  const input = await getStatsInputFromResult(data, statsEventDay)
   if (!input) {
     return {}
   }
@@ -31,11 +31,12 @@ interface Props {
   event: string;
   rows: number;
   cols: number;
+  statsEventDay: number;
 }
 
-export default function StatsLeaderboard({ event, rows, cols }: Props) {
+export default function StatsLeaderboard({ event, rows, cols, statsEventDay }: Props) {
   const { data, error, isLoading } = useSWR(
-    GET_EVENT_DATA_URL(event), fetcher, { refreshInterval: 60 * 1000, }
+    GET_EVENT_DATA_URL(event), (url: string) => fetcher(url, statsEventDay), { refreshInterval: 60 * 1000, }
   )
   
   if (isLoading) {

@@ -10,6 +10,7 @@ function BrowserSource() {
   const event = sp.get("e")
   const rows = sp.get("r")
   const cols = sp.get("c")
+  const statsEventDay = sp.get("sed") || "0"
 
   if (!event || !rows || !cols || isNaN(+rows) || isNaN(+cols) || !Number.isInteger(+rows) || !Number.isInteger(+cols)) {
     return <h1>Invalid Params!</h1>
@@ -20,6 +21,7 @@ function BrowserSource() {
       event={event}
       rows={+rows}
       cols={+cols}
+      statsEventDay={+statsEventDay}
     />
   )
 }
