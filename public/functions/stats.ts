@@ -1,5 +1,5 @@
 import { Result } from "../interfaces/Rankings";
-import { Stat } from "../interfaces/Stats";
+import { Stat, StatsResult } from "../interfaces/Stats";
 import { uuidToIGN } from "./player";
 
 export const getStatsInputFromResult = async (result: Result, statsEventDay: number) => {
@@ -13,3 +13,7 @@ export const getStatsInputFromResult = async (result: Result, statsEventDay: num
 }
 
 export const getScoreTextFromStat = (s: Stat) => `${s.count} - ${s.avg}`
+
+export const getSplitStatsFromResult = (stats: { stats: StatsResult, nickname: string }[], split: string) => {
+  return [...stats].filter(s => !s.stats.error).sort((a, b) => (b.stats[split as keyof StatsResult]! as Stat).count - (a.stats[split as keyof StatsResult]! as Stat).count).map(s => ({ nickname: s.nickname, stats: s.stats[split as keyof StatsResult] }))
+}

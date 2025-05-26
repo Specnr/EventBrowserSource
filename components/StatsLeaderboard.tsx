@@ -3,9 +3,9 @@ import { Spinner } from "./Spinner";
 import useSWR from "swr";
 import Leaderboard from "./Leaderboard";
 import { Result } from "@/public/interfaces/Rankings";
-import { getScoreTextFromStat, getStatsInputFromResult } from "@/public/functions/stats";
+import { getScoreTextFromStat, getSplitStatsFromResult, getStatsInputFromResult } from "@/public/functions/stats";
 import { PlayerEntry } from "./PlayerEntry";
-import { StatsResult } from "@/public/interfaces/Stats";
+import { Stat, StatsResult } from "@/public/interfaces/Stats";
 
 const fetcher = async (url: string, statsEventDay: number) => {
   const data = (await fetch(url).then((res) => res.json())) as Result;
@@ -18,12 +18,12 @@ const fetcher = async (url: string, statsEventDay: number) => {
     .then((res) => res.json())) as { stats: StatsResult, nickname: string }[];
 
   return {
-    nether: [...stats].sort((a, b) => b.stats.nether.count - a.stats.nether.count).map(s => ({ nickname: s.nickname, stats: s.stats.nether })),
-    firstStructure: [...stats].sort((a, b) => b.stats.first_structure.count - a.stats.first_structure.count).map(s => ({ nickname: s.nickname, stats: s.stats.first_structure })),
-    secondStructure: [...stats].sort((a, b) => b.stats.second_structure.count - a.stats.second_structure.count).map(s => ({ nickname: s.nickname, stats: s.stats.second_structure })),
-    firstPortal: [...stats].sort((a, b) => b.stats.first_portal.count - a.stats.first_portal.count).map(s => ({ nickname: s.nickname, stats: s.stats.first_portal })),
-    stronghold: [...stats].sort((a, b) => b.stats.stronghold.count - a.stats.stronghold.count).map(s => ({ nickname: s.nickname, stats: s.stats.stronghold })),
-    end: [...stats].sort((a, b) => b.stats.end.count - a.stats.end.count).map(s => ({ nickname: s.nickname, stats: s.stats.end })),
+    nether: getSplitStatsFromResult(stats, "nether"),
+    firstStructure: getSplitStatsFromResult(stats, "first_structure"),
+    secondStructure: getSplitStatsFromResult(stats, "second_structure"),
+    firstPortal: getSplitStatsFromResult(stats, "first_portal"),
+    stronghold: getSplitStatsFromResult(stats, "stronghold"),
+    end: getSplitStatsFromResult(stats, "end"),
   }
 }
 
@@ -65,7 +65,7 @@ export default function StatsLeaderboard({ event, rows, cols, statsEventDay }: P
                 <PlayerEntry
                   place={playerIndex + 1}
                   name={data.nether[playerIndex].nickname}
-                  scoreText={getScoreTextFromStat(data.nether[playerIndex].stats)}
+                  scoreText={getScoreTextFromStat(data.nether[playerIndex].stats as Stat)}
                 />
               </td>
             </tr>
@@ -87,7 +87,7 @@ export default function StatsLeaderboard({ event, rows, cols, statsEventDay }: P
                 <PlayerEntry
                   place={playerIndex + 1}
                   name={data.firstStructure[playerIndex].nickname}
-                  scoreText={getScoreTextFromStat(data.firstStructure[playerIndex].stats)}
+                  scoreText={getScoreTextFromStat(data.firstStructure[playerIndex].stats as Stat)}
                 />
               </td>
             </tr>
@@ -109,7 +109,7 @@ export default function StatsLeaderboard({ event, rows, cols, statsEventDay }: P
                 <PlayerEntry
                   place={playerIndex + 1}
                   name={data.secondStructure[playerIndex].nickname}
-                  scoreText={getScoreTextFromStat(data.secondStructure[playerIndex].stats)}
+                  scoreText={getScoreTextFromStat(data.secondStructure[playerIndex].stats as Stat)}
                 />
               </td>
             </tr>
@@ -131,7 +131,7 @@ export default function StatsLeaderboard({ event, rows, cols, statsEventDay }: P
                 <PlayerEntry
                   place={playerIndex + 1}
                   name={data.firstPortal[playerIndex].nickname}
-                  scoreText={getScoreTextFromStat(data.firstPortal[playerIndex].stats)}
+                  scoreText={getScoreTextFromStat(data.firstPortal[playerIndex].stats as Stat)}
                 />
               </td>
             </tr>
@@ -153,7 +153,7 @@ export default function StatsLeaderboard({ event, rows, cols, statsEventDay }: P
                 <PlayerEntry
                   place={playerIndex + 1}
                   name={data.stronghold[playerIndex].nickname}
-                  scoreText={getScoreTextFromStat(data.stronghold[playerIndex].stats)}
+                  scoreText={getScoreTextFromStat(data.stronghold[playerIndex].stats as Stat)}
                 />
               </td>
             </tr>
@@ -175,7 +175,7 @@ export default function StatsLeaderboard({ event, rows, cols, statsEventDay }: P
                 <PlayerEntry
                   place={playerIndex + 1}
                   name={data.end[playerIndex].nickname}
-                  scoreText={getScoreTextFromStat(data.end[playerIndex].stats)}
+                  scoreText={getScoreTextFromStat(data.end[playerIndex].stats as Stat)}
                 />
               </td>
             </tr>

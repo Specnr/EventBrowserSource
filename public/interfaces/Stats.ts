@@ -4,6 +4,7 @@ export interface Stat {
 }
 
 export interface StatsResult {
+  error?: boolean;
   nether: Stat;
   bastion: Stat;
   fortress: Stat;
