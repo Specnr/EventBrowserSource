@@ -8,10 +8,10 @@ import { GET_EVENT_DATA_URL } from "@/public/functions/constants";
 
 const fetcher = async (url: string) => {
   const data = (await fetch(url).then((res) => res.json())) as Result;
-  const rankedPlayers = new Set(data.rankings.map(p => p.uuid));
+  const rankedPlayers = new Set(data.rankings ? data.rankings.map(p => p.uuid) : []);
 
   return {
-    rankings: data.rankings.map(p => ({ ...p, nickname: NICKNAME_CACHE.get(p.uuid) || p.nickname })),
+    rankings: data.rankings ? data.rankings.map(p => ({ ...p, nickname: NICKNAME_CACHE.get(p.uuid) || p.nickname })) : [],
     unrankedPlayers: await Promise.all(
       data.event.whitelist
         .filter(p => !rankedPlayers.has(p))
