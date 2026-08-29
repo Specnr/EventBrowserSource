@@ -36,7 +36,9 @@ interface Props {
 
 export default function StatsLeaderboard({ event, rows, cols, statsEventDay }: Props) {
   const { data, error, isLoading } = useSWR(
-    GET_EVENT_DATA_URL(event), (url: string) => fetcher(url, statsEventDay), { refreshInterval: 60 * 1000, }
+    GET_EVENT_DATA_URL(event),
+    (url: string) => fetcher(url, statsEventDay),
+    { refreshInterval: 60 * 1000, keepPreviousData: true }
   )
   
   if (isLoading) {
