@@ -19,6 +19,10 @@ Stats cover all windows configured for the event in PaceMan.
 - r: row count
 - c: column count
 
+## Overall Event Stats
+
+Use `/stats/overall?e=playoffs-s7` as an OBS browser source for the event-wide run total and each split's count, average time, and best time. Set `e` to the event vanity.
+
 ## Customization:
 Add custom CSS to the browser source in order to change how things look
 

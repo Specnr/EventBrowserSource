@@ -1,7 +1,4 @@
-import { GET_INTERNAL_STATS_URL } from "@/public/functions/constants";
-import { msToTime } from "@/public/functions/logic";
-import { type EventStatsResponse } from "@/public/interfaces/Stats";
-import useSWR from "swr";
+import { formatSplitTime, useEventStats } from "@/public/functions/stats";
 import Leaderboard from "./Leaderboard";
 import { PlayerEntry } from "./PlayerEntry";
 import { Spinner } from "./Spinner";
@@ -15,21 +12,6 @@ const SPLITS = [
   "end",
 ];
 
-const fetcher = async (url: string) => {
-  const response = await fetch(url);
-  if (!response.ok) {
-    throw new Error(response.status === 404 ? "Invalid event!" : "Unable to load event stats!");
-  }
-
-  const { players } = (await response.json()) as EventStatsResponse;
-  return SPLITS.map((split) => ({
-    split,
-    players: players
-      .map(({ nickname, splits }) => ({ nickname, ...splits[split] }))
-      .sort((a, b) => b.count - a.count),
-  }));
-};
-
 interface Props {
   event: string;
   rows: number;
@@ -37,9 +19,7 @@ interface Props {
 }
 
 export default function StatsLeaderboard({ event, rows, cols }: Props) {
-  const { data, error, isLoading } = useSWR(GET_INTERNAL_STATS_URL(event), fetcher, {
-    refreshInterval: 60_000,
-  });
+  const { data, error, isLoading } = useEventStats(event);
 
   if (isLoading) {
     return <Spinner />;
@@ -51,32 +31,37 @@ export default function StatsLeaderboard({ event, rows, cols }: Props) {
 
   return (
     <div className="space-y-4">
-      {data.map(({ split, players }) => (
-        <Leaderboard
-          key={split}
-          rows={rows}
-          cols={cols}
-          generateCell={(i, j) => {
-            const playerIndex = rows * i + j;
-            const player = players[playerIndex];
-            if (!player) return;
+      {SPLITS.map((split) => {
+        const players = data.players
+          .map(({ nickname, splits }) => ({ nickname, ...splits[split] }))
+          .sort((a, b) => b.count - a.count);
 
-            const average = player.avgMs === null ? "N/A" : msToTime(player.avgMs).replace(/^0(?=\d:)/, "");
-            return (
-              <tr key={j}>
-                <td className="p-0">
-                  <PlayerEntry
-                    place={playerIndex + 1}
-                    name={player.nickname ?? "N/A"}
-                    scoreText={`${player.count} - ${average}`}
-                    hideImage={!player.nickname}
-                  />
-                </td>
-              </tr>
-            );
-          }}
-        />
-      ))}
+        return (
+          <Leaderboard
+            key={split}
+            rows={rows}
+            cols={cols}
+            generateCell={(i, j) => {
+              const playerIndex = rows * i + j;
+              const player = players[playerIndex];
+              if (!player) return;
+
+              return (
+                <tr key={j}>
+                  <td className="p-0">
+                    <PlayerEntry
+                      place={playerIndex + 1}
+                      name={player.nickname ?? "N/A"}
+                      scoreText={`${player.count} - ${formatSplitTime(player.avgMs)}`}
+                      hideImage={!player.nickname}
+                    />
+                  </td>
+                </tr>
+              );
+            }}
+          />
+        );
+      })}
     </div>
   );
 }
