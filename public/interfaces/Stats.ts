@@ -1,17 +1,13 @@
-export interface Stat {
+export interface SplitStats {
   count: number;
-  avg: string;
+  avgMs: number | null;
 }
 
-export interface StatsResult {
-  error?: boolean;
-  nether: Stat;
-  bastion: Stat;
-  fortress: Stat;
-  first_structure: Stat;
-  second_structure: Stat;
-  first_portal: Stat;
-  stronghold: Stat;
-  end: Stat;
-  finish: Stat;
+export interface PlayerEventStats {
+  nickname: string | null;
+  splits: Record<string, SplitStats>;
+}
+
+export interface EventStatsResponse {
+  players: PlayerEventStats[];
 }

@@ -2,7 +2,7 @@
 Creates a dynamic leaderboard for PaceMan events, built for customizeability in OBS
 
 ## Leaderboard
-The leaderboard browser source can be found here: `/lb?e=66d60519e80565e493300254&r=8&c=2`
+The leaderboard browser source can be found here: `/lb?e=playoffs-s7&r=8&c=2`
 
 ### Params:
 - e: event vanity
@@ -10,7 +10,9 @@ The leaderboard browser source can be found here: `/lb?e=66d60519e80565e49330025
 - c: column count
 
 ## Event Stats
-The stats leaderboard browser source can be found here: `/stats?e=66d60519e80565e493300254&r=8&c=2`
+The stats leaderboard browser source can be found here: `/stats?e=playoffs-s7&r=8&c=2`
+
+Stats cover all windows configured for the event in PaceMan.
 
 ### Params:
 - e: event vanity
